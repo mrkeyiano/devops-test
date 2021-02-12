@@ -1,4 +1,6 @@
 femi-aws-cred.txt
+femi-sshkey
+femi-sshkey.pub
 .DS_Store
 .idea/
 
