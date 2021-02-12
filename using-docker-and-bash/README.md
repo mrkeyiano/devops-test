@@ -11,6 +11,10 @@ Download and install docker [here](https://docs.docker.com/get-docker/ "here").
 Download and install Docker Compose on Windows Server & Linux Systems by following this [guide](https://docs.docker.com/compose/install/ "guide")
 
 
+**google cloud sdk:**
+Follow this link to setup google cloud sdk
+https://cloud.google.com/sdk/docs/install
+
 ------------
  
  ## Setup Containers Using Make Command
