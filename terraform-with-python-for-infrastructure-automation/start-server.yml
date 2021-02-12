@@ -21,7 +21,7 @@
         aws_secret_key: "{{secret_key}}"
         name: "{{ssh_key_pairname}}"
         region: "{{region}}"
-        key_material: "{{ lookup('file', 'keypair/' ssh_key_filename_pub) }}"
+        key_material: "{{ lookup('file', 'keypair/' + ssh_key_filename_pub) }}"
 
     - name: start provisioned server
       amazon.aws.cloudformation:
