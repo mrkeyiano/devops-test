@@ -1,8 +1,6 @@
 - hosts: localhost
   connection: local
   vars:
-    access_key: "AKIA6CJZIZOXWWLEMOMC"
-    secret_key: "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"
     region: "eu-west-1"
     ssh_key_filename: "femi-sshkey"
     ssh_key_filename_pub: "femi-sshkey.pub"
