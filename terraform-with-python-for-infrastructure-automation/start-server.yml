@@ -1,0 +1,47 @@
+- hosts: localhost
+  connection: local
+  vars:
+    access_key: "AKIA6CJZIZOXWWLEMOMC"
+    secret_key: "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"
+    region: "eu-west-1"
+    ssh_key_filename: "femi-sshkey"
+    ssh_key_filename_pub: "femi-sshkey.pub"
+    ssh_key_pairname: "femi-test"
+
+  tasks:
+    - name: generate SSH key "{{ssh_key_filename}}"
+      community.crypto.openssh_keypair:
+          path: "keypair/{{ssh_key_filename}}"
+          type: rsa
+          size: 2048
+          state: present
+          force: yes
+
+    - name: create server ssh key pair
+      amazon.aws.ec2_key:
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        name: "{{ssh_key_pairname}}"
+        region: "{{region}}"
+        key_material: "{{ lookup('file', 'keypair/' ssh_key_filename_pub) }}"
+
+    - name: start provisioned server
+      amazon.aws.cloudformation:
+        stack_name: "femi-ansible-cloudformation"
+        state: "present"
+        region: "{{region}}"
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        disable_rollback: true
+        template: "cf-devops-template.json"
+        template_parameters:
+          KeyPairName: "{{ssh_key_pairname}}"
+          TagKey: "Name"
+          TagValue: "femiServerDemo"
+          InstanceType: "t1.micro"
+          ImageId: "ami-0e5657f6d3c3ea350"
+          OperatingSystem: "Linux"
+          SSHLocation: "0.0.0.0/0"
+        tags:
+          Stack: "femi-ansible-cloudformation"
+

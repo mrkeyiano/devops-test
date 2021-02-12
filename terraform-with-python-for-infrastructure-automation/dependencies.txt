@@ -1,0 +1,15 @@
+python3
+pip3
+boto3
+aws-cli
+docker-ce
+Make
+Ansible
+google-cloud-sdk
+
+Commands to run:
+#install amazon.aws ansible collection
+ansible-galaxy collection install amazon.aws
+
+#install ansible with pip3
+pip3 install ansible

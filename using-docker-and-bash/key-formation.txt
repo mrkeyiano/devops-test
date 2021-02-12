@@ -1,0 +1,16 @@
+"PrivateKey": {
+      "Type": "Custom::RSAKey",
+      "Properties": {
+        "Name": "keypair/server-private-key",
+        "ServiceToken": "!Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:binxio-cfn-secret-provider'"
+      }
+    },
+    "KeyPair": {
+      "Type": "Custom::KeyPair",
+      "DependsOn": "PrivateKey",
+      "Properties": {
+        "Name": "femi",
+        "PublicKeyMaterial": "!GetAtt 'PrivateKey.PublicKey'",
+        "ServiceToken": "!Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:binxio-cfn-secret-provider'"
+      }
+    },

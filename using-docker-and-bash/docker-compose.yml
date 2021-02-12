@@ -1,0 +1,62 @@
+version: '3'
+ 
+services:
+ elasticsearch:
+
+   build :
+     context: .
+     dockerfile: ./elasticsearch
+   container_name: elasticsearch
+   environment:
+     - "discovery.type=single-node"
+   networks:
+     - femi-network
+   volumes:
+     - esdata:/Users/shared/elasticsearch/data
+ 
+ kibana:
+   build:
+     context: .
+     dockerfile: ./kibana
+   container_name: kibana
+   environment:
+     SERVER_NAME : kibana
+     ELASTICSEARCH_URL : http://elasticsearch:9200
+   networks:
+     - femi-network
+   depends_on:
+     - elasticsearch
+ 
+ nginx:
+   build:
+     context: .
+     dockerfile: ./nginx
+   container_name : proxy
+   ports:
+     - "8080:80"
+   networks:
+     - femi-network
+   depends_on:
+     - kibana
+
+ mysql:
+   container_name: devops_db
+   image: mysql:5.7
+   networks:
+     - femi-network
+   ports:
+     - "3306:3306"
+   restart: always
+   environment:
+     MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+     MYSQL_ROOT_PASSWORD: NULL
+     MYSQL_DATABASE: devops
+     MYSQL_USER: femi
+     MYSQL_PASSWORD: password
+ 
+volumes:
+   esdata:
+     driver: local
+ 
+networks:
+   femi-network:

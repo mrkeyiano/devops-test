@@ -1,0 +1,25 @@
+- hosts: localhost
+  connection: local
+  vars:
+    ssh_key_filename: "femi-sshkey"
+    ssh_key_pairname: "femi-test"
+    region: "eu-west-1"
+
+  tasks:
+    - name: remove ssh key pair from server
+      amazon.aws.ec2_key:
+        name: "{{ssh_key_pairname}}"
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        region: "{{region}}"
+        state: absent
+
+    - name: stop provisioned server
+      amazon.aws.cloudformation:
+        stack_name: "femi-ansible-cloudformation"
+        region: "{{region}}"
+        aws_access_key: "{{access_key}}"
+        aws_secret_key: "{{secret_key}}"
+        state: "absent"
+
+
